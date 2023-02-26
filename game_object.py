@@ -1,6 +1,6 @@
 import pygame
 from data import*
-from random import choice
+from random import choice, uniform
 
 class Board(pygame.Rect):
     def __init__(self,x, y, width, heigth, image, speed):
@@ -44,4 +44,4 @@ class Ball():
         
         self.X += self.ANGLE
         self.Y += self.VERTICAL
-
+        print((self.ANGLE ** 2 + self.VERTICAL ** 2)**0.5)
