@@ -10,18 +10,35 @@ pygame.display.set_caption("ping-pong")
 
 def run():
     game = True 
+    score1 = 0 
+    score2 = 0 
     clock = pygame.time.Clock()
-    player_left = Board(15,250 ,20, 100,None, 5)
-    player_right = Board(setting_win["WIDTH"]-20-15,250,20,100,None,5)
+    player_left = Board(start_game["LEFT_PLAYER"][0] ,
+                        start_game["LEFT_PLAYER"][1],
+                        setting_board["WIDTH"],
+                        setting_board["HEIGHT"],
+                        None, 7)
+    player_right = Board(   start_game["RIGHT_PLAYER"][0],
+                            start_game["RIGHT_PLAYER"][1],
+                            setting_board["WIDTH"],
+                            setting_board["HEIGHT"],
+                            None,7)
     
-    ball = Ball(setting_win["WIDTH"]//2, setting_win["HEIGHT"]//2, 15,(255,255,255), None,5)
+    ball = Ball(start_game["BALL"]["START"][0],
+                start_game["BALL"]["START"][1], 
+                setting_ball["RADIUS"],
+                (0,255,0), None, 
+                setting_ball["SPEED"])
     
-
+    font = pygame.font.Font(None, 50)
     while game:
         window.fill((0,0,0))
+        pygame.draw.line( window, (255,255,255),
+                        (setting_win["WIDTH"] // 2, 0), (setting_win["WIDTH"] // 2, setting_win["HEIGHT"]))
         pygame.draw.rect(window, (255,0,0),player_left)
         pygame.draw.rect(window,(255,0,0),player_right)
-        pygame.draw.circle(window,ball.COLOR,(ball.X,ball.Y),ball.RADIUS)
+        pygame.draw.circle(window, ball.COLOR,(ball.X,ball.Y),ball.RADIUS)
+        win_lose_score(window , ball, player_left, player_right, score1, score2, font)
         
         if ball.DIRECTION :
             ball.move(player_left)
@@ -55,8 +72,10 @@ def run():
                 if event.key == pygame.K_i:
                     player_right.MOVE["UP"] = False
                 if event.key == pygame.K_k:
-                    player_right.MOVE["DOWN"] = False     
+                    player_right.MOVE["DOWN"] = False 
 
+        
+                
         clock.tick(60)
         pygame.display.flip()
 run()
