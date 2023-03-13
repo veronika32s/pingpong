@@ -10,19 +10,21 @@ pygame.display.set_caption("ping-pong")
 
 def run():
     game = True 
-    score1 = 0 
-    score2 = 0 
+     
     clock = pygame.time.Clock()
     player_left = Board(start_game["LEFT_PLAYER"][0] ,
                         start_game["LEFT_PLAYER"][1],
                         setting_board["WIDTH"],
                         setting_board["HEIGHT"],
-                        None, 7)
+                        None, 
+                        setting_board["SPEED"])
+    
     player_right = Board(   start_game["RIGHT_PLAYER"][0],
                             start_game["RIGHT_PLAYER"][1],
                             setting_board["WIDTH"],
                             setting_board["HEIGHT"],
-                            None,7)
+                            None,
+                            setting_board["SPEED"])
     
     ball = Ball(start_game["BALL"]["START"][0],
                 start_game["BALL"]["START"][1], 
@@ -38,7 +40,7 @@ def run():
         pygame.draw.rect(window, (255,0,0),player_left)
         pygame.draw.rect(window,(255,0,0),player_right)
         pygame.draw.circle(window, ball.COLOR,(ball.X,ball.Y),ball.RADIUS)
-        win_lose_score(window , ball, player_left, player_right, score1, score2, font)
+        win_lose_score(window , ball, player_left, player_right, font)
         
         if ball.DIRECTION :
             ball.move(player_left)
@@ -74,7 +76,12 @@ def run():
                 if event.key == pygame.K_k:
                     player_right.MOVE["DOWN"] = False 
 
-        
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                x,y = event.pos
+                if button_list[0].collidepoint(x,y):
+                    restart_game(ball,player_left,player_right)
+                elif button_list[1].collidepoint(x,y):
+                    game = False
                 
         clock.tick(60)
         pygame.display.flip()
